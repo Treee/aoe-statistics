@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "test": "jasmine"
   },
   "author": "",
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "mongoose": "^5.9.16"
+  },
+  "devDependencies": {
+    "jasmine": "^3.5.0"
   }
 }
