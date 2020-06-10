@@ -27,20 +27,31 @@ module.exports = (mongoose, user, password) => {
         matches: [_match]
     });
 
-    async function getPlayers() {
-        console.log('db');
+    function getPlayers() {
+        console.log('getPlayers');
         const PlayerModel = mongoose.model('Player', _player);
-        const query = PlayerModel.find({});
-        return await query.exec().then((results) => {
-            console.log('results', results);
+        return PlayerModel.find({}).then((results) => {
             return results;
         });
+    }
+
+    function _createPlayer(playerName, playerTeam) {
+        // console.log(`_createPlayer ${playerName} ${playerTeam}`);
+        const PlayerModel = mongoose.model('Player', _player);
+        return PlayerModel.create({ name: playerName, team: playerTeam }).then((newPlayer) => {
+            return newPlayer;
+        });
+    }
+
+    function errorHandler(error) {
+        console.log('Error', error);
     }
 
     return {
         MatchModel: mongoose.model('Match', _match),
         PlayerModel: mongoose.model('Player', _player),
         startServer: _connectToDB,
-        getAllPlayers: getPlayers
+        getAllPlayers: getPlayers,
+        createPlayer: _createPlayer
     }
 }

@@ -27,6 +27,27 @@ describe('API Server', () => {
             });
         });
 
+        it('adds a player to the DB', (done) => {
+            const dbCreatePlayerSpy = spyOn(database, 'createPlayer').and.callThrough();
+            const expectedPlayerPayload = {
+                name: "testTeam",
+                team: "Test Team 1"
+            };
+            const opts = {
+                url: "http://localhost:3000/api/player",
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                json: true,
+                body: { name: expectedPlayerPayload.name, team: expectedPlayerPayload.team }
+            };
+            request.post(opts, (error, response) => {
+                expect(response.statusCode).toEqual(200);
+                expect(dbCreatePlayerSpy).toHaveBeenCalledWith(expectedPlayerPayload.name, expectedPlayerPayload.team);
+                expect(response.body.name).toBe(expectedPlayerPayload.name);
+                expect(response.body.team).toBe(expectedPlayerPayload.team);
+                done();
+            });
+        });
     });
 
 })
