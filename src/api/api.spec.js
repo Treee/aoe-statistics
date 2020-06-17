@@ -50,4 +50,17 @@ describe('API Server', () => {
         });
     });
 
-})
+    describe('/api/tournaments', () => {
+        it('returns a list of tournaments in the DB', (done) => {
+            const dbGetAllTournamentsSpy = spyOn(database, 'getAllTournaments').and.callThrough();
+            request.get("http://localhost:3000/api/tournaments", (error, response) => {
+                expect(response.statusCode).toEqual(200);
+                expect(dbGetAllTournamentsSpy).toHaveBeenCalled();
+                expect(response.body.length).toBeGreaterThan(0);
+                done();
+            });
+        });
+
+    });
+
+});

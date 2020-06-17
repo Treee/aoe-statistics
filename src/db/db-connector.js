@@ -47,11 +47,27 @@ module.exports = (mongoose, user, password) => {
         console.log('Error', error);
     }
 
+    function getTournaments() {
+        const MatchModel = mongoose.model('Match', _match);
+        console.log('getTournaments');
+        return MatchModel.aggregate([
+            {
+                "$group": {
+                    "_id": "$tournamentName"
+                }
+            }
+        ]).then((results) => {
+            console.log('test1', results);
+            return results;
+        });
+    }
+
     return {
         MatchModel: mongoose.model('Match', _match),
         PlayerModel: mongoose.model('Player', _player),
         startServer: _connectToDB,
         getAllPlayers: getPlayers,
-        createPlayer: _createPlayer
+        createPlayer: _createPlayer,
+        getAllTournaments: getTournaments
     }
 }

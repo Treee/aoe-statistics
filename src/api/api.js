@@ -15,15 +15,22 @@ function _startServer(port, dbConnection) {
             res.status(200).json(players);
         });
     });
+
     app.post('/api/player', (req, res) => {
-        console.log('router /api/player', req.body);
+        // console.log('router /api/player', req.body);
         dbConnection.createPlayer(req.body.name, req.body.team).then((newPlayer) => {
             console.log('newPlayer', newPlayer);
             res.status(200).send(newPlayer);
         });
     });
 
-
+    app.get('/api/tournaments', (req, res) => {
+        // console.log('router /api/tournaments');
+        dbConnection.getAllTournaments().then((tournaments) => {
+            // console.log('tournaments', tournaments);
+            res.status(200).json(tournaments);
+        });
+    });
 
     app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
 }
