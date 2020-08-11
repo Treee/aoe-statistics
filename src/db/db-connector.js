@@ -1,8 +1,20 @@
 module.exports = (mongoose, user, password) => {
     function _connectToDB(table) {
-        mongoose.connect(`mongodb://aoe-statistics-db?authSource=admin`, { useNewUrlParser: true, dbName: table, user: user, pass: password });
-        var db = mongoose.connection;
-        db.on('error', console.error.bind(console, 'connection error:'));
+        var db = undefined;
+        try {
+            mongoose.connect(`mongodb://aoe-statistics-db?authSource=admin`, { useNewUrlParser: true, dbName: table, user: user, pass: password });
+            db = mongoose.connection;
+        } catch (exception) {
+            setTimeout(() => {
+                mongoose.connect(`mongodb://aoe-statistics-db?authSource=admin`, { useNewUrlParser: true, dbName: table, user: user, pass: password });
+                db = mongoose.connection;
+            }, 10000); // wait 10s if we fail to connect the first time.
+        }
+
+        db.on('error', function () {
+            console.error.bind(console, 'connection error:')
+        });
+
         db.once('open', function () {
             console.log('connected!');
         });
