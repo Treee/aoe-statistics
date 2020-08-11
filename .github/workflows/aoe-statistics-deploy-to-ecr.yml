@@ -41,8 +41,8 @@ jobs:
 
     - name: Build and tag the api image
       run: |
-        docker build . --build-arg init_db_root_username=${{ secrets.MONGO_INITDB_ROOT_USERNAME }} \
-        --build-arg init_db_root_password=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} \
+        docker build . --build-arg db_username=${{ secrets.MONGO_INITDB_ROOT_USERNAME }} \
+        --build-arg db_password=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} \
         --build-arg server_port=${{ secrets.API_SERVER_PORT }} \
         -t api \
         -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$REPO_NAME:api
