@@ -16,7 +16,6 @@ COPY package.json /aoe-statistics/package.json
 RUN npm install 
 
 COPY . /aoe-statistics
-RUN npm run build
 
 EXPOSE ${server_port}
 
