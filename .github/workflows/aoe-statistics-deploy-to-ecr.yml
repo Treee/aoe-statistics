@@ -26,13 +26,27 @@ jobs:
     - name: Setup ECR
       run: |
         $( aws ecr get-login --no-include-email )
-    - name: Build and tag the image
+    - name: Build and tag the mongo db image
       run: |
+        cd src/db
         docker build . --build-arg init_db_root_username=${{ secrets.MONGO_INITDB_ROOT_USERNAME }} \
         --build-arg init_db_root_password=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} \
-        -t latest \
-        -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$REPO_NAME:latest
+        -t db \
+        -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$REPO_NAME:db
+        cd ../..
     - name: Push
       if: github.ref == 'refs/heads/master'
       run: |
-        docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$REPO_NAME:latest
+        docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$REPO_NAME:db
+
+    - name: Build and tag the api image
+      run: |
+        docker build . --build-arg init_db_root_username=${{ secrets.MONGO_INITDB_ROOT_USERNAME }} \
+        --build-arg init_db_root_password=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} \
+        --build-arg server_port=${{ secrets.API_SERVER_PORT }} \
+        -t api \
+        -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$REPO_NAME:api
+    - name: Push
+      if: github.ref == 'refs/heads/master'
+      run: |
+        docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$REPO_NAME:api

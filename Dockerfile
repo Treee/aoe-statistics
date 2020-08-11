@@ -1,9 +1,23 @@
-FROM mongo
+FROM alpine
 
-ARG init_db_root_username
-ENV MONGO_INITDB_ROOT_USERNAME ${init_db_root_username}
+ARG server_port
+ENV SERVER_PORT ${server_port}
 
-ARG init_db_root_password
-ENV MONGO_INITDB_ROOT_PASSWORD ${init_db_root_password}
+ARG db_username
+ENV DB_USERNAME ${db_username}
 
-CMD ["mongod", "--auth"]
+ARG db_password
+ENV DB_PASSWORD ${db_password}
+
+RUN apk add --update npm
+
+WORKDIR /aoe-statistics
+COPY package.json /aoe-statistics/package.json
+RUN npm install 
+
+COPY . /aoe-statistics
+RUN npm run build
+
+EXPOSE ${server_port}
+
+CMD ["npm", "start"]
