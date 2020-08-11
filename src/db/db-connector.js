@@ -1,6 +1,6 @@
 module.exports = (mongoose, user, password) => {
     function _connectToDB(table) {
-        mongoose.connect(`mongodb://localhost:27017?authSource=admin`, { useNewUrlParser: true, dbName: table, user: user, pass: password });
+        mongoose.connect(`mongodb://aoe-statistics-api?authSource=admin`, { useNewUrlParser: true, dbName: table, user: user, pass: password });
         var db = mongoose.connection;
         db.on('error', console.error.bind(console, 'connection error:'));
         db.once('open', function () {
