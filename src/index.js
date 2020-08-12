@@ -4,5 +4,5 @@ database.startServer("development");
 
 
 const api = require("./api/api");
-// api.startServer(process.env.SERVER_PORT, database);
-api.startServer(3000, database);
+api.startServer(process.env.SERVER_PORT, database);
+// api.startServer(3000, database);

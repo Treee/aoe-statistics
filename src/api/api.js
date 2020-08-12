@@ -10,12 +10,24 @@ function _startServer(port, dbConnection) {
 
     app.options('*', cors());
 
+    app.use(function (req, res, next) {
+        var allowedOrigins = ['http://localhost:8080', 'https://itsatreee.com'];
+        var origin = req.headers.origin;
+        if (allowedOrigins.indexOf(origin) > -1) {
+            res.setHeader('Access-Control-Allow-Origin', origin);
+        }
+        res.header('Access-Control-Allow-Methods', 'GET, OPTIONS, DELETE');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.header('Access-Control-Allow-Credentials', true);
+        return next();
+    });
+
     app.get('/', (req, res) => res.send('Hello World!'), errorHandler);
 
     app.get('/api/players', (req, res) => {
         // console.log('router /api/players');
         dbConnection.getAllPlayers().then((players) => {
-            // console.log('players', players);
+            console.log('players', players);
             res.status(200).json(players);
         });
     }, errorHandler);
@@ -28,9 +40,9 @@ function _startServer(port, dbConnection) {
         });
     }, errorHandler);
 
-    app.delete('/api/player/:playerId', async (req, res) => {
+    app.delete('/api/player/:playerId', (req, res) => {
         console.log('delete /api/player', req.params.playerId);
-        await dbConnection.deletePlayer(req.params.playerId).then(() => {
+        dbConnection.deletePlayer(req.params.playerId).then(() => {
             console.log('deletePlayer');
             res.status(200).send();
         });
