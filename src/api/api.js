@@ -10,7 +10,7 @@ function _startServer(port, dbConnection) {
 
     app.options('*', cors());
 
-    app.get('/', (req, res) => res.send('Hello World!'));
+    app.get('/', (req, res) => res.send('Hello World!'), errorHandler);
 
     app.get('/api/players', (req, res) => {
         // console.log('router /api/players');
@@ -18,7 +18,7 @@ function _startServer(port, dbConnection) {
             // console.log('players', players);
             res.status(200).json(players);
         });
-    });
+    }, errorHandler);
 
     app.post('/api/player', (req, res) => {
         console.log('post /api/player', req.body);
@@ -26,7 +26,7 @@ function _startServer(port, dbConnection) {
             console.log('newPlayer', newPlayer);
             res.status(200).send(newPlayer);
         });
-    });
+    }, errorHandler);
 
     app.delete('/api/player/:playerId', (req, res) => {
         console.log('post /api/player', req.params.playerId);
@@ -34,7 +34,7 @@ function _startServer(port, dbConnection) {
             console.log('deletePlayer');
             res.status(200).send();
         });
-    });
+    }, errorHandler);
 
     app.get('/api/tournaments', (req, res) => {
         // console.log('router /api/tournaments');
@@ -42,7 +42,11 @@ function _startServer(port, dbConnection) {
             // console.log('tournaments', tournaments);
             res.status(200).json(tournaments);
         });
-    });
+    }, errorHandler);
+
+    function errorHandler(error) {
+        console.log('Error', error);
+    }
 
     app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
 }
