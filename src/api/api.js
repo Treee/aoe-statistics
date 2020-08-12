@@ -11,6 +11,7 @@ function _startServer(port, dbConnection) {
     app.options('*', cors());
 
     app.get('/', (req, res) => res.send('Hello World!'));
+
     app.get('/api/players', (req, res) => {
         // console.log('router /api/players');
         dbConnection.getAllPlayers().then((players) => {
@@ -19,18 +20,19 @@ function _startServer(port, dbConnection) {
         });
     });
 
-    app.delete('/api/player/:playerId', (req, res) => {
-        console.log('post /api/player', req.params.playerId);
-        dbConnection.deletePlayer(req.params.playerId).then(() => {
-            console.log('deletePlayer');
-            res.status(200).send();
-        });
-    });
     app.post('/api/player', (req, res) => {
         console.log('post /api/player', req.body);
         dbConnection.createPlayer(req.body.name, req.body.team).then((newPlayer) => {
             console.log('newPlayer', newPlayer);
             res.status(200).send(newPlayer);
+        });
+    });
+
+    app.delete('/api/player/:playerId', (req, res) => {
+        console.log('post /api/player', req.params.playerId);
+        dbConnection.deletePlayer(req.params.playerId).then(() => {
+            console.log('deletePlayer');
+            res.status(200).send();
         });
     });
 
