@@ -13,7 +13,7 @@ module.exports = (mongoose, user, password) => {
         }
 
         db.on('error', function () {
-            console.error.bind(console, 'connection error:')
+            console.error('connection error:')
         });
 
         db.once('open', function () {
@@ -45,7 +45,7 @@ module.exports = (mongoose, user, password) => {
         const PlayerModel = mongoose.model('Player', _player);
         return PlayerModel.find({}).then((results) => {
             return results;
-        });
+        }, errorHandler);
     }
 
     function _createPlayer(playerName, playerTeam) {
@@ -53,7 +53,7 @@ module.exports = (mongoose, user, password) => {
         const PlayerModel = mongoose.model('Player', _player);
         return PlayerModel.create({ name: playerName, team: playerTeam }).then((newPlayer) => {
             return newPlayer;
-        });
+        }, errorHandler);
     }
 
     function _deletePlayer(playerId) {
@@ -62,7 +62,7 @@ module.exports = (mongoose, user, password) => {
         return PlayerModel.find({ _id: ObjectId(playerId) }).then((playerToDelete) => {
             console.log(`Found player to delete ${playerToDelete}`);
             playerToDelete.remove();
-        });
+        }, errorHandler);
     }
 
     function errorHandler(error) {
