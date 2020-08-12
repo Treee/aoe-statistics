@@ -1,5 +1,6 @@
 module.exports = (mongoose, user, password) => {
     function _connectToDB(table) {
+        // mongoose/mongo handles the db connection so open it once when the app starts and reuse the db object.
         var db = undefined;
         try {
             mongoose.connect(`mongodb://aoe-statistics-db?authSource=admin`, { useNewUrlParser: true, dbName: table, user: user, pass: password });
