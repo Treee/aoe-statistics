@@ -28,9 +28,9 @@ function _startServer(port, dbConnection) {
         });
     }, errorHandler);
 
-    app.delete('/api/player/:playerId', (req, res) => {
-        console.log('post /api/player', req.params.playerId);
-        dbConnection.deletePlayer(req.params.playerId).then(() => {
+    app.delete('/api/player/:playerId', async (req, res) => {
+        console.log('delete /api/player', req.params.playerId);
+        await dbConnection.deletePlayer(req.params.playerId).then(() => {
             console.log('deletePlayer');
             res.status(200).send();
         });

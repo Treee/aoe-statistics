@@ -56,7 +56,7 @@ module.exports = (mongoose, user, password) => {
         }, errorHandler);
     }
 
-    function _deletePlayer(playerId) {
+    async function _deletePlayer(playerId) {
         console.log(`_deletePlayer ${playerId}`);
         const PlayerModel = mongoose.model('Player', _player);
         return PlayerModel.find({ _id: mongoose.Types.ObjectId(playerId) }).then((playerToDelete) => {
