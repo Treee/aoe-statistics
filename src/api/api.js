@@ -5,6 +5,7 @@ function _startServer(port, dbConnection) {
 
     const app = express();
 
+    app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
 
     app.options('*', cors());
