@@ -18,7 +18,7 @@ function _startServer(port, dbConnection) {
     });
 
     app.post('/api/player', (req, res) => {
-        // console.log('router /api/player', req.body);
+        console.log('post /api/player', req.body);
         dbConnection.createPlayer(req.body.name, req.body.team).then((newPlayer) => {
             console.log('newPlayer', newPlayer);
             res.status(200).send(newPlayer);

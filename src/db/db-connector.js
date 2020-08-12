@@ -49,7 +49,7 @@ module.exports = (mongoose, user, password) => {
     }
 
     function _createPlayer(playerName, playerTeam) {
-        // console.log(`_createPlayer ${playerName} ${playerTeam}`);
+        console.log(`_createPlayer ${playerName} ${playerTeam}`);
         const PlayerModel = mongoose.model('Player', _player);
         return PlayerModel.create({ name: playerName, team: playerTeam }).then((newPlayer) => {
             return newPlayer;
