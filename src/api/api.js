@@ -19,9 +19,9 @@ function _startServer(port, dbConnection) {
         });
     });
 
-    app.delete('/api/player', (req, res) => {
-        console.log('post /api/player', req.body);
-        dbConnection.deletePlayer(req.body.playerId).then(() => {
+    app.delete('/api/player/playerId', (req, res) => {
+        console.log('post /api/player', req.params.playerId);
+        dbConnection.deletePlayer(req.params.playerId).then(() => {
             console.log('deletePlayer');
             res.status(200).send();
         });
