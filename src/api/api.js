@@ -19,6 +19,13 @@ function _startServer(port, dbConnection) {
         });
     });
 
+    app.delete('/api/player', (req, res) => {
+        console.log('post /api/player', req.body);
+        dbConnection.deletePlayer(req.body.playerId).then(() => {
+            console.log('deletePlayer');
+            res.status(200).send();
+        });
+    });
     app.post('/api/player', (req, res) => {
         console.log('post /api/player', req.body);
         dbConnection.createPlayer(req.body.name, req.body.team).then((newPlayer) => {

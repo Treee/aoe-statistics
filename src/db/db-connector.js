@@ -56,6 +56,15 @@ module.exports = (mongoose, user, password) => {
         });
     }
 
+    function _deletePlayer(playerId) {
+        console.log(`_deletePlayer ${playerId}`);
+        const PlayerModel = mongoose.model('Player', _player);
+        return PlayerModel.find({ _id: playerId }).then((playerToDelete) => {
+            console.log(`Found player to delete ${playerToDelete}`);
+            playerToDelete.remove();
+        });
+    }
+
     function errorHandler(error) {
         console.log('Error', error);
     }
@@ -81,6 +90,7 @@ module.exports = (mongoose, user, password) => {
         startServer: _connectToDB,
         getAllPlayers: getPlayers,
         createPlayer: _createPlayer,
+        deletePlayer: _deletePlayer,
         getAllTournaments: getTournaments
     }
 }
