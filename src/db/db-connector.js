@@ -59,7 +59,7 @@ module.exports = (mongoose, user, password) => {
     function _deletePlayer(playerId) {
         console.log(`_deletePlayer ${playerId}`);
         const PlayerModel = mongoose.model('Player', _player);
-        return PlayerModel.find({ _id: ObjectId(playerId) }).then((playerToDelete) => {
+        return PlayerModel.find({ _id: mongoose.Types.ObjectId(playerId) }).then((playerToDelete) => {
             console.log(`Found player to delete ${playerToDelete}`);
             playerToDelete.remove();
         }, errorHandler);
