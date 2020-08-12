@@ -5,7 +5,8 @@ function _startServer(port, dbConnection) {
 
     const app = express();
     app.use(bodyParser.json());
-    app.use(cors());
+
+    app.options('*', cors());
 
     app.get('/', (req, res) => res.send('Hello World!'));
     app.get('/api/players', (req, res) => {
