@@ -33,7 +33,7 @@ module.exports = (mongoose, user, password) => {
         group: String,
         match: Number,
         game: Number,
-        civPlayer: String,
+        civPlayed: String,
         mapPlayed: String,
         winner: Boolean,
         position: String
@@ -70,7 +70,7 @@ module.exports = (mongoose, user, password) => {
         }, errorHandler);
     }
 
-    async function _deletePlayer(playerId) {
+    function _deletePlayer(playerId) {
         console.log(`_deletePlayer ${playerId}`);
         const PlayerModel = mongoose.model('Player', _player);
         return PlayerModel.findByIdAndRemove(playerId, () => {
@@ -98,6 +98,42 @@ module.exports = (mongoose, user, password) => {
         });
     }
 
+    function _getMatchById(matchId) {
+        const MatchModel = mongoose.model('Match', _match);
+        return MatchModel.findById(matchId, (foundMatch) => {
+            console.log(`foundMatch ${foundMatch}`);
+            return foundMatch;
+        }, errorHandler);
+    }
+
+    function _createMatch(tournamentName, phase, stage, group, match, game, civPlayed, mapPlayed, winner, position) {
+        console.log(`_createPlayer ${playerName} ${playerTeam}`);
+        const MatchModel = mongoose.model('Match', _match);
+        return MatchModel.create({
+            tournamentName: tournamentName,
+            phase: phase,
+            stage: stage,
+            group: group,
+            match: match,
+            game: game,
+            civPlayed: civPlayed,
+            mapPlayed: mapPlayed,
+            winner: winner,
+            position: position
+        }).then((newPlayer) => {
+            return newPlayer;
+        }, errorHandler);
+    }
+
+    function _deleteMatch(id) {
+        console.log(`_deletePlayer ${playerId}`);
+        const MatchModel = mongoose.model('Match', _match);
+        return MatchModel.findByIdAndRemove(id, () => {
+            console.log(`match deleted ${id}`);
+            // playerToDelete.remove();
+        }, errorHandler);
+    }
+
     return {
         MatchModel: mongoose.model('Match', _match),
         PlayerModel: mongoose.model('Player', _player),
@@ -106,6 +142,9 @@ module.exports = (mongoose, user, password) => {
         getPlayerById: _getPlayerById,
         createPlayer: _createPlayer,
         deletePlayer: _deletePlayer,
-        getAllTournaments: getTournaments
+        getAllTournaments: getTournaments,
+        getMatchById: _getMatchById,
+        createMatch: _createMatch,
+        deleteMatch: _deleteMatch
     }
 }
