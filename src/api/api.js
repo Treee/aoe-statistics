@@ -7,18 +7,16 @@ function _startServer(port, dbConnection) {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
 
-    const apiRouter = express.Router();
-
-    apiRouter.use('*', (req, res, next) => {
+    app.use((req, res, next) => {
         var allowedOrigins = ['http://localhost:8080', 'https://itsatreee.com'];
         var origin = req.headers.origin;
         console.log(`incomming request from ${origin}`);
         if (allowedOrigins.indexOf(origin) > -1) {
             res.setHeader('Access-Control-Allow-Origin', origin);
         }
-        res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
-        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        res.header('Access-Control-Allow-Credentials', true);
+        res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.setHeader('Access-Control-Allow-Credentials', true);
 
         if (req.method === "OPTIONS") {
             return res.status(200).end();
@@ -27,6 +25,17 @@ function _startServer(port, dbConnection) {
         return next();
     });
 
+    const apiRouter = express.Router();
+
+    apiRouter.route('/api/player/delete')
+        .post((req, res) => {
+            console.log('delete /api/player/delete', req.body);
+            dbConnection.deletePlayer(req.body.playerId).then(() => {
+                console.log('deletePlayer');
+                res.status(200).json();
+            });
+        }, errorHandler);
+
     apiRouter.route('/api/players').get((req, res) => {
         // console.log('router /api/players');
         dbConnection.getAllPlayers().then((players) => {
@@ -34,15 +43,6 @@ function _startServer(port, dbConnection) {
             res.status(200).json(players);
         });
     }, errorHandler);
-
-    apiRouter.route('/api/player/delete')
-        .post((req, res) => {
-            console.log('post /api/player', req.body);
-            dbConnection.deletePlayer(req.body).then(() => {
-                console.log('deletePlayer');
-                res.status(200).json();
-            });
-        }, errorHandler);
 
     apiRouter.route('/api/player')
         .post((req, res) => {
@@ -89,8 +89,8 @@ function _startServer(port, dbConnection) {
         }, errorHandler);
 
 
-    app.use('/api', apiRouter);
-    app.get('/', (req, res) => res.send('Hello World!'), errorHandler);
+    app.use('/', apiRouter);
+    // app.get('/', (req, res) => res.send('Hello World!'), errorHandler);
 
 
     function errorHandler(error) {
