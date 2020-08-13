@@ -27,7 +27,7 @@ function _startServer(port, dbConnection) {
 
     const apiRouter = express.Router();
 
-    apiRouter.route('/api/player/:id')
+    apiRouter.route('/api/playerz/:id')
         .post((req, res) => {
             console.log('delete /api/player', req.body);
             console.log('delete /api/player', req.params.playerId);
