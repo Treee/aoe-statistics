@@ -27,10 +27,12 @@ function _startServer(port, dbConnection) {
 
     const apiRouter = express.Router();
 
-    apiRouter.route('/api/player/delete')
+    apiRouter.route('/api/player/:id')
         .post((req, res) => {
-            console.log('delete /api/player/delete', req.body);
-            dbConnection.deletePlayer(req.body.playerId).then(() => {
+            console.log('delete /api/player', req.body);
+            console.log('delete /api/player', req.params.playerId);
+            const playerId = req.params.id || req.body.playerId;
+            dbConnection.deletePlayer(playerId).then(() => {
                 console.log('deletePlayer');
                 res.status(200).json();
             });
