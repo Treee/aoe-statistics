@@ -8,7 +8,7 @@ function _startServer(port, dbConnection) {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
 
-    app.options('*', cors());
+    // app.options('*', cors());
 
     app.use(function (req, res, next) {
         var allowedOrigins = ['http://localhost:8080', 'https://itsatreee.com'];
