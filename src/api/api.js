@@ -9,7 +9,7 @@ function _startServer(port, dbConnection) {
 
     const apiRouter = express.Router();
 
-    apiRouter.all('*', (req, res, next) => {
+    apiRouter.use('*', (req, res, next) => {
         var allowedOrigins = ['http://localhost:8080', 'https://itsatreee.com'];
         var origin = req.headers.origin;
         console.log(`incomming request from ${origin}`);
