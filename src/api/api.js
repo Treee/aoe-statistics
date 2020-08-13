@@ -35,21 +35,21 @@ function _startServer(port, dbConnection) {
         });
     }, errorHandler);
 
+    apiRouter.route('/api/player/delete')
+        .post((req, res) => {
+            console.log('post /api/player', req.body);
+            dbConnection.deletePlayer(req.body).then(() => {
+                console.log('deletePlayer');
+                res.status(200).json();
+            });
+        }, errorHandler);
+
     apiRouter.route('/api/player')
         .post((req, res) => {
             console.log('post /api/player', req.body);
             dbConnection.createPlayer(req.body.name, req.body.team).then((newPlayer) => {
                 console.log('newPlayer', newPlayer);
                 res.status(200).json(newPlayer);
-            });
-        }, errorHandler)
-        .delete((req, res) => {
-            console.log('delete /api/player', req.body);
-            console.log('delete /api/player', req.params.playerId);
-            const playerId = req.params.playerId || req.body;
-            dbConnection.deletePlayer(playerId).then(() => {
-                console.log('deletePlayer');
-                res.status(200).json();
             });
         }, errorHandler);
 
