@@ -7,7 +7,7 @@ function _startServer(port, dbConnection) {
     app.use(bodyParser.urlencoded({ extended: true }));
 
     app.use((req, res, next) => {
-        var allowedOrigins = ['http://localhost:8080', 'https://itsatreee.com'];
+        var allowedOrigins = ['http://localhost:8080', 'https://itsatreee.com', 'https://treee.github.io/'];
         var origin = req.headers.origin;
         console.log(`incomming request from ${origin}`);
         if (allowedOrigins.indexOf(origin) > -1) {
