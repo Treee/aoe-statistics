@@ -42,8 +42,10 @@ function _startServer(port, dbConnection) {
     }, errorHandler);
 
     app.delete('/api/player/:playerId', (req, res) => {
+        console.log('delete /api/player', req.body);
         console.log('delete /api/player', req.params.playerId);
-        dbConnection.deletePlayer(req.params.playerId).then(() => {
+        const playerId = req.params.playerId || req.body;
+        dbConnection.deletePlayer(playerId).then(() => {
             console.log('deletePlayer');
             res.status(200).send();
         });
