@@ -7,9 +7,10 @@ function _startServer(port, dbConnection) {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
 
-    // app.options('*', cors());
+    const apiRouter = express.Router();
+    app.use(apiRouter);
 
-    app.all(function (req, res, next) {
+    apiRouter.all('*', (req, res, next) => {
         var allowedOrigins = ['http://localhost:8080', 'https://itsatreee.com'];
         var origin = req.headers.origin;
         console.log(`incomming request from ${origin}`);
@@ -27,9 +28,9 @@ function _startServer(port, dbConnection) {
         return next();
     });
 
-    app.get('/', (req, res) => res.send('Hello World!'), errorHandler);
+    apiRouter.route('/').get((req, res) => res.send('Hello World!'), errorHandler);
 
-    app.get('/api/players', (req, res) => {
+    apiRouter.route('/api/players').get((req, res) => {
         // console.log('router /api/players');
         dbConnection.getAllPlayers().then((players) => {
             console.log('players', players);
@@ -37,31 +38,58 @@ function _startServer(port, dbConnection) {
         });
     }, errorHandler);
 
-    app.post('/api/player', (req, res) => {
-        console.log('post /api/player', req.body);
-        dbConnection.createPlayer(req.body.name, req.body.team).then((newPlayer) => {
-            console.log('newPlayer', newPlayer);
-            res.status(200).json(newPlayer);
-        });
-    }, errorHandler);
+    apiRouter.route('/api/player')
+        .post((req, res) => {
+            console.log('post /api/player', req.body);
+            dbConnection.createPlayer(req.body.name, req.body.team).then((newPlayer) => {
+                console.log('newPlayer', newPlayer);
+                res.status(200).json(newPlayer);
+            });
+        }, errorHandler)
+        .delete((req, res) => {
+            console.log('delete /api/player', req.body);
+            console.log('delete /api/player', req.params.playerId);
+            const playerId = req.params.playerId || req.body;
+            dbConnection.deletePlayer(playerId).then(() => {
+                console.log('deletePlayer');
+                res.status(200).json();
+            });
+        }, errorHandler);
 
-    app.delete('/api/player', (req, res) => {
-        console.log('delete /api/player', req.body);
-        console.log('delete /api/player', req.params.playerId);
-        const playerId = req.params.playerId || req.body;
-        dbConnection.deletePlayer(playerId).then(() => {
-            console.log('deletePlayer');
-            res.status(200).json();
-        });
-    }, errorHandler);
+    // app.get('/api/players', (req, res) => {
+    //     // console.log('router /api/players');
+    //     dbConnection.getAllPlayers().then((players) => {
+    //         console.log('players', players);
+    //         res.status(200).json(players);
+    //     });
+    // }, errorHandler);
 
-    app.get('/api/tournaments', (req, res) => {
-        // console.log('router /api/tournaments');
-        dbConnection.getAllTournaments().then((tournaments) => {
-            // console.log('tournaments', tournaments);
-            res.status(200).json(tournaments);
-        });
-    }, errorHandler);
+    // app.post('/api/player', (req, res) => {
+    //     console.log('post /api/player', req.body);
+    //     dbConnection.createPlayer(req.body.name, req.body.team).then((newPlayer) => {
+    //         console.log('newPlayer', newPlayer);
+    //         res.status(200).json(newPlayer);
+    //     });
+    // }, errorHandler);
+
+    // app.delete('/api/player', (req, res) => {
+    //     console.log('delete /api/player', req.body);
+    //     console.log('delete /api/player', req.params.playerId);
+    //     const playerId = req.params.playerId || req.body;
+    //     dbConnection.deletePlayer(playerId).then(() => {
+    //         console.log('deletePlayer');
+    //         res.status(200).json();
+    //     });
+    // }, errorHandler);
+
+    apiRouter.route('/api/tournaments')
+        .get((req, res) => {
+            // console.log('router /api/tournaments');
+            dbConnection.getAllTournaments().then((tournaments) => {
+                // console.log('tournaments', tournaments);
+                res.status(200).json(tournaments);
+            });
+        }, errorHandler);
 
     function errorHandler(error) {
         console.log('Error', error);
