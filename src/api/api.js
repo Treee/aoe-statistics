@@ -3,7 +3,6 @@ function _startServer(port, dbConnection) {
     const bodyParser = require('body-parser');
     const app = express();
 
-
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -21,7 +20,6 @@ function _startServer(port, dbConnection) {
         if (req.method === "OPTIONS") {
             return res.status(200).end();
         }
-
         return next();
     });
 
@@ -31,10 +29,7 @@ function _startServer(port, dbConnection) {
     const tournamentRouter = require('./tournament-routes')(express, dbConnection);
     app.use('/api/tournaments', tournamentRouter);
 
-
     app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
-
-
 }
 
 module.exports = {
