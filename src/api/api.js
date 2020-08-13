@@ -8,7 +8,6 @@ function _startServer(port, dbConnection) {
     app.use(bodyParser.urlencoded({ extended: true }));
 
     const apiRouter = express.Router();
-    app.use(apiRouter);
 
     apiRouter.all('*', (req, res, next) => {
         var allowedOrigins = ['http://localhost:8080', 'https://itsatreee.com'];
@@ -27,8 +26,6 @@ function _startServer(port, dbConnection) {
 
         return next();
     });
-
-    apiRouter.route('/').get((req, res) => res.send('Hello World!'), errorHandler);
 
     apiRouter.route('/api/players').get((req, res) => {
         // console.log('router /api/players');
@@ -90,6 +87,11 @@ function _startServer(port, dbConnection) {
                 res.status(200).json(tournaments);
             });
         }, errorHandler);
+
+
+    app.use('/api', apiRouter);
+    app.get('/', (req, res) => res.send('Hello World!'), errorHandler);
+
 
     function errorHandler(error) {
         console.log('Error', error);
