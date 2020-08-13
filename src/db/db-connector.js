@@ -2,16 +2,17 @@ module.exports = (mongoose, user, password) => {
     function _connectToDB(table, isLocalDev) {
         // mongoose/mongo handles the db connection so open it once when the app starts and reuse the db object.
         var db = undefined;
+        const mongooseConnectionOptions = { useNewUrlParser: true, dbName: table, user: user, pass: password, useFindAndModify: false };
         try {
             if (isLocalDev) {
-                mongoose.connect(`mongodb://localhost`, { useNewUrlParser: true, dbName: table, user: user, pass: password });
+                mongoose.connect(`mongodb://localhost`, mongooseConnectionOptions);
             } else {
-                mongoose.connect(`mongodb://aoe-statistics-db?authSource=admin`, { useNewUrlParser: true, dbName: table, user: user, pass: password });
+                mongoose.connect(`mongodb://aoe-statistics-db?authSource=admin`, mongooseConnectionOptions);
             }
             db = mongoose.connection;
         } catch (exception) {
             setTimeout(() => {
-                mongoose.connect(`mongodb://aoe-statistics-db?authSource=admin`, { useNewUrlParser: true, dbName: table, user: user, pass: password });
+                mongoose.connect(`mongodb://aoe-statistics-db?authSource=admin`, mongooseConnectionOptions);
                 db = mongoose.connection;
             }, 10000); // wait 10s if we fail to connect the first time.
         }
@@ -49,6 +50,15 @@ module.exports = (mongoose, user, password) => {
         const PlayerModel = mongoose.model('Player', _player);
         return PlayerModel.find({}).then((results) => {
             return results;
+        }, errorHandler);
+    }
+
+    function _getPlayerById(playerId) {
+        console.log('_getPlayerById', playerId);
+        const PlayerModel = mongoose.model('Player', _player);
+        return PlayerModel.findById(playerId, (foundPlayer) => {
+            console.log(`foundPlayer ${foundPlayer}`);
+            return foundPlayer;
         }, errorHandler);
     }
 
@@ -93,6 +103,7 @@ module.exports = (mongoose, user, password) => {
         PlayerModel: mongoose.model('Player', _player),
         startServer: _connectToDB,
         getAllPlayers: getPlayers,
+        getPlayerById: _getPlayerById,
         createPlayer: _createPlayer,
         deletePlayer: _deletePlayer,
         getAllTournaments: getTournaments
