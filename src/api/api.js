@@ -37,17 +37,17 @@ function _startServer(port, dbConnection) {
         console.log('post /api/player', req.body);
         dbConnection.createPlayer(req.body.name, req.body.team).then((newPlayer) => {
             console.log('newPlayer', newPlayer);
-            res.status(200).send(newPlayer);
+            res.status(200).json(newPlayer);
         });
     }, errorHandler);
 
-    app.delete('/api/player/:playerId', (req, res) => {
+    app.delete('/api/player', (req, res) => {
         console.log('delete /api/player', req.body);
         console.log('delete /api/player', req.params.playerId);
         const playerId = req.params.playerId || req.body;
         dbConnection.deletePlayer(playerId).then(() => {
             console.log('deletePlayer');
-            res.status(200).send();
+            res.status(200).json();
         });
     }, errorHandler);
 
