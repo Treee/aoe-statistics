@@ -9,7 +9,7 @@ function _startServer(port, dbConnection) {
 
     // app.options('*', cors());
 
-    app.use(function (req, res, next) {
+    app.all(function (req, res, next) {
         var allowedOrigins = ['http://localhost:8080', 'https://itsatreee.com'];
         var origin = req.headers.origin;
         console.log(`incomming request from ${origin}`);
