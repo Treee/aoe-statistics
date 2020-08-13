@@ -1,7 +1,6 @@
 function _startServer(port, dbConnection) {
     const express = require('express');
     const bodyParser = require('body-parser');
-    const cors = require('cors');
 
     const app = express();
 
@@ -20,6 +19,11 @@ function _startServer(port, dbConnection) {
         res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
         res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
         res.header('Access-Control-Allow-Credentials', true);
+
+        if (req.method === "OPTIONS") {
+            return res.status(200).end();
+        }
+
         return next();
     });
 
