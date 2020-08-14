@@ -83,7 +83,7 @@ module.exports = (mongoose, user, password) => {
         console.log('Error', error);
     }
 
-    function getTournaments() {
+    function _getTournaments() {
         const MatchModel = mongoose.model('Match', _match);
         console.log('getTournaments');
         return MatchModel.aggregate([
@@ -142,7 +142,7 @@ module.exports = (mongoose, user, password) => {
         getPlayerById: _getPlayerById,
         createPlayer: _createPlayer,
         deletePlayer: _deletePlayer,
-        getAllTournaments: getTournaments,
+        getAllTournaments: _getTournaments,
         getMatchById: _getMatchById,
         createMatch: _createMatch,
         deleteMatch: _deleteMatch
