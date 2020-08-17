@@ -35,7 +35,7 @@ module.exports = (mongoose, user, password) => {
         game: Number,
         civPlayed: String,
         mapPlayed: String,
-        winner: Boolean,
+        winner: String,
         position: String
     });
 
