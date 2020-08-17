@@ -2,10 +2,18 @@ module.exports = (express, dbConnection) => {
     const tournamentRouter = express.Router();
 
     tournamentRouter.route('/all').get((req, res) => {
-        console.log('router /api/tournaments');
+        console.log('router /api/tournaments/all');
         dbConnection.getAllTournaments().then((tournaments) => {
             console.log('tournaments', tournaments);
             res.status(200).json(tournaments);
+        });
+    }, errorHandler);
+
+    tournamentRouter.route('/matches').get((req, res) => {
+        console.log('router /api/tournaments/matches');
+        dbConnection.getAllMatches().then((matches) => {
+            console.log('matches', matches);
+            res.status(200).json(matches);
         });
     }, errorHandler);
 

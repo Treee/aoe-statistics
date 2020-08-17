@@ -87,33 +87,18 @@ module.exports = (mongoose, user, password) => {
         const MatchModel = mongoose.model('Match', _match);
         console.log('getTournaments');
         return MatchModel.aggregate([
-            {
-                $group: {
-                    _id: "$tournamentName"
-                }, phase: {
-                    $first: "$phase"
-                }, stage: {
-                    $first: "$stage"
-                }, group: {
-                    $first: "$group"
-                }, match: {
-                    $first: "$match"
-                }, game: {
-                    $first: "$game"
-                }, civPlayed: {
-                    $first: "$civPlayed"
-                }, mapPlayed: {
-                    $first: "$mapPlayed"
-                }, winner: {
-                    $first: "$winner"
-                }, position: {
-                    $first: "$position"
-                }, count: { $sum: 1 }
-            }
+            { $group: { _id: "$tournamentName" } }
         ]).then((results) => {
             console.log('test1', results);
             return results;
         });
+    }
+
+    function _getMatches() {
+        const MatchModel = mongoose.model('Match', _match);
+        return MatchModel.find({}).then((matches) => {
+            return matches;
+        }, errorHandler);
     }
 
     function _getMatchById(matchId) {
@@ -161,6 +146,7 @@ module.exports = (mongoose, user, password) => {
         createPlayer: _createPlayer,
         deletePlayer: _deletePlayer,
         getAllTournaments: _getTournaments,
+        getAllMatches: _getMatches,
         getMatchById: _getMatchById,
         createMatch: _createMatch,
         deleteMatch: _deleteMatch
