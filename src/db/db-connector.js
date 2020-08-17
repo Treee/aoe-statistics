@@ -107,7 +107,7 @@ module.exports = (mongoose, user, password) => {
     }
 
     function _createMatch(tournamentName, phase, stage, group, match, game, civPlayed, mapPlayed, winner, position) {
-        console.log(`_createPlayer ${playerName} ${playerTeam}`);
+        console.log(`_createPlayer ${tournamentName}, ${phase}, ${stage}, ${group}, ${match}, ${game}, ${civPlayed}, ${mapPlayed}, ${winner}, ${position}`);
         const MatchModel = mongoose.model('Match', _match);
         return MatchModel.create({
             tournamentName: tournamentName,
@@ -120,8 +120,8 @@ module.exports = (mongoose, user, password) => {
             mapPlayed: mapPlayed,
             winner: winner,
             position: position
-        }).then((newPlayer) => {
-            return newPlayer;
+        }).then((newMatch) => {
+            return newMatch;
         }, errorHandler);
     }
 
