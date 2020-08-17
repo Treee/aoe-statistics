@@ -88,8 +88,26 @@ module.exports = (mongoose, user, password) => {
         console.log('getTournaments');
         return MatchModel.aggregate([
             {
-                "$group": {
-                    "_id": "$tournamentName"
+                $group: {
+                    _id: "$tournamentName"
+                }, phase: {
+                    $first: "$phase"
+                }, stage: {
+                    $first: "$stage"
+                }, group: {
+                    $first: "$group"
+                }, match: {
+                    $first: "$match"
+                }, game: {
+                    $first: "$game"
+                }, civPlayed: {
+                    $first: "$civPlayed"
+                }, mapPlayed: {
+                    $first: "$mapPlayed"
+                }, winner: {
+                    $first: "$winner"
+                }, position: {
+                    $first: "$position"
                 }
             }
         ]).then((results) => {
