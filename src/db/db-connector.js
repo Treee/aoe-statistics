@@ -108,7 +108,7 @@ module.exports = (mongoose, user, password) => {
                     $first: "$winner"
                 }, position: {
                     $first: "$position"
-                }
+                }, count: { $sum: 1 }
             }
         ]).then((results) => {
             console.log('test1', results);
