@@ -2,7 +2,9 @@ module.exports = (express, dbConnection) => {
   const twitchWebhook = express.Router();
 
   twitchWebhook.route('/callback').get((req, res) => {
-    res.status(200).json({});     
+    console.log(req);
+    console.log(req.body);
+    res.status(200).send("");     
   }, errorHandler);
 
   function errorHandler(error) {
