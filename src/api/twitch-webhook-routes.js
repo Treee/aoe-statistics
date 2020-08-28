@@ -2,10 +2,10 @@ module.exports = (express, dbConnection) => {
   const twitchWebhook = express.Router();
 
   twitchWebhook.route('/follows').get((req, res) => {
-    console.log(req.query);
-    console.log(req.params);
-    console.log(req.url);
-    res.status(200).send(req.query['hub.challenge']);     
+    console.log('query', req.query);
+    const x = req.query.hub;
+    console.log('x', x);
+    res.status(200).send(req.query);     
   }, errorHandler);
 
   function errorHandler(error) {
