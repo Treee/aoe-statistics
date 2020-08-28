@@ -5,7 +5,7 @@ module.exports = (express, dbConnection) => {
     console.log(req.query);
     console.log(req.params);
     console.log(req.url);
-    res.status(200).send(req.query.hub.challenge);     
+    res.status(200).send(req.query['hub.challenge']);     
   }, errorHandler);
 
   function errorHandler(error) {
