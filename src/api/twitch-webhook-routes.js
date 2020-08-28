@@ -4,11 +4,10 @@ module.exports = (express, dbConnection) => {
   twitchWebhook.route('/follows').get((req, res) => {
       // in the future check the hub challenge to make sure it is correct
       // sha256(secret, notification_bytes).
-      const x = req.query['hub.challenge'];
-      console.log(x);
-      console.log(req.query['hub.challenge']);
+      const hubChallenge = req.query['hub.challenge'];
+      console.log('hub challenge', hubChallenge);
       res.setHeader('content-type', 'text/plain');
-      res.status(200).send(req.query['hub.challenge']);
+      res.status(200).send(JSON.stringify(hubChallenge));
     }, errorHandler)
     .post((req, res) => {
       res.status(200).send(req.body);
