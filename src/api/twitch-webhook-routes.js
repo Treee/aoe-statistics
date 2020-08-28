@@ -3,7 +3,7 @@ module.exports = (express, dbConnection) => {
 
   playerRouter.route('/callback').get((req, res) => {
     console.log("stuff", req);
-    res.status(200);      
+    res.status(200).json({});     
   }, errorHandler);
 
   // playerRouter.route('/:id')
