@@ -1,10 +1,10 @@
 module.exports = (mongoose, user, password) => {
-    function _connectToDB(table, isLocalDev) {
-        // mongoose/mongo handles the db connection so open it once when the app starts and reuse the db object.
+    function _connectToDB(table, isLocal) {
         var db = undefined;
+        // mongoose/mongo handles the db connection so open it once when the app starts and reuse the db object.
         const mongooseConnectionOptions = { useNewUrlParser: true, dbName: table, user: user, pass: password, useFindAndModify: false };
         try {
-            if (isLocalDev) {
+            if (isLocal) {
                 mongoose.connect(`mongodb://localhost`, mongooseConnectionOptions);
             } else {
                 mongoose.connect(`mongodb://aoe-statistics-db?authSource=admin`, mongooseConnectionOptions);
