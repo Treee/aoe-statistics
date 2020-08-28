@@ -6,6 +6,7 @@ module.exports = (express, dbConnection) => {
       // sha256(secret, notification_bytes).
       const x = req.query['hub.challenge'];
       console.log(x);
+      console.log(req.query['hub.challenge']);
       res.status(200).send(req.query['hub.challenge']);
     }, errorHandler)
     .post((req, res) => {
