@@ -7,6 +7,7 @@ module.exports = (express, dbConnection) => {
       const x = req.query['hub.challenge'];
       console.log(x);
       console.log(req.query['hub.challenge']);
+      res.setHeader('content-type', 'text/plain');
       res.status(200).send(req.query['hub.challenge']);
     }, errorHandler)
     .post((req, res) => {
