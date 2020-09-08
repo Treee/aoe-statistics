@@ -1,10 +1,12 @@
-function _startServer(port, dbConnection) {
+function _startServer(port, dbConnection, websocket) {
     const express = require('express');
     const bodyParser = require('body-parser');
     const app = express();
 
     app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
 
     app.use((req, res, next) => {
         var allowedOrigins = ['http://localhost:8080', 'https://itsatreee.com', 'https://treee.github.io/'];
@@ -27,9 +29,9 @@ function _startServer(port, dbConnection) {
     app.use('/api/players', playerRouter);
 
     const tournamentRouter = require('./tournament-routes')(express, dbConnection);
-    app.use('/api/tournaments', tournamentRouter);    
-    
-    const twitchWebHookRouter = require('./twitch-webhook-routes')(express, dbConnection);
+    app.use('/api/tournaments', tournamentRouter);
+
+    const twitchWebHookRouter = require('./twitch-webhook-routes')(express, websocket);
     app.use('/api/twitchwebhook', twitchWebHookRouter);
 
     app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));

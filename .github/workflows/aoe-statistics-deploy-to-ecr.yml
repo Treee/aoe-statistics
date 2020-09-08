@@ -31,6 +31,7 @@ jobs:
         cd src/db
         docker build . --build-arg init_db_root_username=${{ secrets.MONGO_INITDB_ROOT_USERNAME }} \
         --build-arg init_db_root_password=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} \
+        --build-arg client_id=${{secrets.CLIENT_ID}} \
         -t db \
         -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$REPO_NAME:db
         cd ../..

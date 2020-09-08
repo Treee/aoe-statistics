@@ -9,6 +9,9 @@ ENV DB_USERNAME ${db_username}
 ARG db_password
 ENV DB_PASSWORD ${db_password}
 
+ARG client_id
+ENV CLIENT_ID ${client_id}
+
 RUN apk add --update npm
 
 WORKDIR /aoe-statistics
